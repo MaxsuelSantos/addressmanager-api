@@ -1,14 +1,10 @@
-package br.com.max.addresmanager.entity;
+package br.com.max.addresmanager.dto;
 
-import javax.persistence.*;
-import java.util.Objects;
+import br.com.max.addresmanager.entity.Address;
+import br.com.max.addresmanager.entity.Person;
+import br.com.max.addresmanager.service.PersonService;
 
-@Entity
-public class Address {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class AddressDTO {
     private String publicPlace;
     private Integer number;
     private String complement;
@@ -16,28 +12,7 @@ public class Address {
     private String city;
     private String state;
     private String zipCode;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Person person;
-
-    public Address(String publicPlace, Integer number, String complement, String district, String city, String state, String zipCode, Person person) {
-        this.publicPlace = publicPlace;
-        this.number = number;
-        this.complement = complement;
-        this.district = district;
-        this.city = city;
-        this.state = state;
-        this.zipCode = zipCode;
-        this.person = person;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private Long personId;
 
     public String getPublicPlace() {
         return publicPlace;
@@ -95,16 +70,17 @@ public class Address {
         this.zipCode = zipCode;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Address address = (Address) o;
-        return id.equals(address.id);
+    public Long getPersonId() {
+        return personId;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public void setPersonId(Long personId) {
+        this.personId = personId;
     }
+
+    public Address toModel(PersonService personService) {
+        Person person = personService.findById(personId);
+        return new Address(publicPlace, number, complement, district, city, state, zipCode, person);
+    }
+
 }

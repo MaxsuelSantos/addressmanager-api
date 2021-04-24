@@ -10,7 +10,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/person")
+@RequestMapping("/api/v1/person")
 public class PersonController {
 
     private PersonService personService;
@@ -19,10 +19,6 @@ public class PersonController {
         this.personService = personService;
     }
 
-    @GetMapping
-    public void findPerson() {
-        System.out.println("Oi");
-    }
 
     @PostMapping
     public ResponseEntity<PersonDTO> createPerson(@RequestBody PersonDTO personDTO, UriComponentsBuilder uriBuilder) {

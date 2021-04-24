@@ -24,4 +24,8 @@ public class PersonService {
 
         return new PersonDTO(savedPerson);
     }
+
+    public Person findById(Long id) {
+        return personRepository.findById(id).get();
+    }
 }
